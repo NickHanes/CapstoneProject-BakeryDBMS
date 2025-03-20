@@ -1,0 +1,12 @@
+{
+    "name": "CapstoneProject-BakeryDBMS",
+    "version": "1.0.0",
+    "scripts": {
+        "start:frontend": "cd frontend && npm start",
+        "start:backend": "cd backend && uvicorn main:app --reload",
+        "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^7.6.0"
+    }
+}

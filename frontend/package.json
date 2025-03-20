@@ -22,7 +22,7 @@
     "eject": "react-scripts eject",
     "start": "concurrently \"npm run start:react\" \"npm run start:uvicorn\"",
     "start:react": "react-scripts start",
-    "start:uvicorn": "uvicorn main:app --reload"
+    "start:uvicorn": "uvicorn /Users/nicholashanes/Documents/GitHub/CapstoneProject-BakeryDBMS/backend/main:app --reload"
   },
   "eslintConfig": {
     "extends": [

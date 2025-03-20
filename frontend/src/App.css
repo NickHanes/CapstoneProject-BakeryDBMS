@@ -1,15 +1,53 @@
+/* Import Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-100;
-  }
+/* Custom Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #1e1e1e; /* Dark gray */
+  color: #e0e0e0; /* Light gray for readability */
 }
 
-@layer components {
-  .btn {
-    @apply bg-blue-500 text-white py-2 px-4 rounded;
-  }
+/* Headings */
+h1, h2, h3 {
+  font-family: 'Helvetica', sans-serif;
+  color: #a7f3d0; /* Seafoam green */
+}
+
+/* Dashboard Container */
+.dashboard-container {
+  @apply max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+/* Sections */
+.section {
+  @apply bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-700;
+}
+
+/* Tables */
+table {
+  @apply w-full bg-gray-900 border border-gray-700 shadow-md rounded-xl overflow-hidden;
+}
+
+th, td {
+  @apply px-4 py-3 text-sm text-left border-b border-gray-700;
+}
+
+thead {
+  @apply bg-teal-500 text-white;
+}
+
+tbody tr {
+  @apply hover:bg-gray-800 transition;
+}
+
+/* Buttons */
+button {
+  @apply bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition;
+}
+
+button:hover {
+  @apply bg-teal-400;
 }
