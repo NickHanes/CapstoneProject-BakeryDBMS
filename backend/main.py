@@ -2,8 +2,19 @@ from fastapi import FastAPI
 import psycopg2
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import date
+from fastapi.templating import Jinja2Templates
+from starlette.requests import Request
+from pathlib import Path
 
 app = FastAPI()
+
+# Specify the directory for custom HTML files
+templates = Jinja2Templates(directory=Path(__file__).parent / "template")
+
+@app.get("/")
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 origins = [
     "http://localhost:3000",  # Allow your React frontend
@@ -31,36 +42,32 @@ def get_db_connection():
 # Pydantic models
 class Product(BaseModel):
     name: str
-    full_inventory: int
     current_stock: int
+    full_inventory: int
 
-# Endpoint to add a new product
-@app.post("/products/")
-def add_product(product: Product):
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute(
-        "INSERT INTO products (name, full_inventory, current_stock) VALUES (%s, %s, %s) RETURNING product_id;",
-        (product.name, product.full_inventory, product.current_stock),
-    )
-    product_id = cur.fetchone()[0]
-    conn.commit()
-    cur.close()
-    conn.close()
-    return {"product_id": product_id}
+class StockUpdate(BaseModel):
+    current_stock: int
+    update_date: date
 
 # Endpoint to get products
 @app.get("/products/")
 async def get_products():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM products;")  # Or whatever table/fields you want
+    cur.execute("SELECT * FROM products;")
     rows = cur.fetchall()
     cur.close()
     conn.close()
 
-    # Returning the data as a list of dictionaries
-    return [{"product_id": row[0], "name": row[1], "full_inventory": row[2], "current_stock": row[3]} for row in rows]
+    return [
+        {
+            "product_id": int(row[0]),
+            "name": row[1],
+            "current_stock": int(row[2]),
+            "full_inventory": row[3]
+        }
+        for row in rows
+    ]
 
 # Endpoint to get products that need to be made
 @app.get("/production_needed/")
@@ -104,6 +111,33 @@ def get_recipes():
     conn.close()
 
     return [{"recipe_id": row[0], "product_id": row[1], "ingredient_id": row[2], "amount_needed": row[3], "unit": row[4]} for row in rows]
+
+# Endpoint to update product stock and log history
+@app.put("/products/{product_id}/stock")
+def update_product_stock(product_id: int, stock_update: StockUpdate):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Update the current_stock for the specified product
+    cur.execute("""
+        UPDATE products
+        SET current_stock = %s
+        WHERE product_id = %s;
+    """, (stock_update.current_stock, product_id))
+    
+    # Insert the stock update into product history
+    cur.execute("""
+        INSERT INTO product_history (product_id, stock_date, current_stock)
+        VALUES (%s, %s, %s)
+        ON CONFLICT (product_id, stock_date) DO UPDATE 
+        SET current_stock = EXCLUDED.current_stock;
+    """, (product_id, stock_update.update_date, stock_update.current_stock))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return {"message": f"Product {product_id} stock updated to {stock_update.current_stock} on {stock_update.update_date}."}
 
 # Run the FastAPI server
 if __name__ == "__main__":

@@ -6,14 +6,14 @@
 /* Custom Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #1e1e1e; /* Dark gray */
+  background-color: #464343; /* Dark gray */
   color: #e0e0e0; /* Light gray for readability */
 }
 
 /* Headings */
 h1, h2, h3 {
   font-family: 'Helvetica', sans-serif;
-  color: #a7f3d0; /* Seafoam green */
+  color: #afffda;
 }
 
 /* Dashboard Container */
