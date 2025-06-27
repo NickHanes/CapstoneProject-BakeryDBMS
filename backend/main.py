@@ -43,7 +43,7 @@ class StockUpdate(BaseModel):
     update_date: date
 
 # Endpoint to get products
-@app.get("/products/")
+@app.get("/api/products/")
 async def get_products():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -63,7 +63,7 @@ async def get_products():
     ]
 
 # Endpoint to get products that need to be made
-@app.get("/production_needed/")
+@app.get("/api/production_needed/")
 def get_production_needed():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -82,7 +82,7 @@ def get_production_needed():
     return [{"product_id": row[0], "name": row[1], "to_produce": row[2]} for row in rows]
 
 # Endpoint to get inventory
-@app.get("/inventory/")
+@app.get("/api/inventory/")
 def get_inventory():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -94,7 +94,7 @@ def get_inventory():
     return [{"ingredient_id": row[0], "name": row[1], "stock": row[2], "unit": row[3]} for row in rows]
 
 # Endpoint to get recipes
-@app.get("/recipes/")
+@app.get("/api/recipes/")
 def get_recipes():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -106,7 +106,7 @@ def get_recipes():
     return [{"recipe_id": row[0], "product_id": row[1], "ingredient_id": row[2], "amount_needed": row[3], "unit": row[4]} for row in rows]
 
 # Endpoint to update product stock and log history
-@app.put("/products/{product_id}/stock")
+@app.put("/api/products/{product_id}/stock")
 def update_product_stock(product_id: int, stock_update: StockUpdate):
     conn = get_db_connection()
     cur = conn.cursor()
