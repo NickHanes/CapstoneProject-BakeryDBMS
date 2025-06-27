@@ -10,7 +10,7 @@ from pathlib import Path
 app = FastAPI()
 
 # Specify the directory for custom HTML files
-templates = Jinja2Templates(directory=Path(__file__).parent / "template")
+templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 
 @app.get("/")
 async def read_root(request: Request):
