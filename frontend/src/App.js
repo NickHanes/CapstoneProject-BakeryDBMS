@@ -2,12 +2,14 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Dashboard from './Dashboard'; // Import Dashboard component
 import { useState, useEffect } from "react";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 // History Page
 const HistoryPage = () => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/inventory_history")
+    fetch(`${API_URL}/api/inventory_history`)
       .then((res) => res.json())
       .then((data) => setHistory(data))
       .catch((err) => console.error("Error fetching history:", err));
