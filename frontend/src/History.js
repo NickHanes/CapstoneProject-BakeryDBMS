@@ -3,6 +3,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const History = () => {
   const [history, setHistory] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -14,7 +16,7 @@ const History = () => {
   const fetchHistory = async () => {
     try {
       const formattedDate = selectedDate.toISOString().split("T")[0]; 
-      const response = await axios.get(`http://localhost:8000/history?date=${formattedDate}`);
+      const response = await axios.get(`${API_URL}/api/history?date=${formattedDate}`);
       setHistory(response.data);
     } catch (error) {
       console.error("Error fetching history:", error);
