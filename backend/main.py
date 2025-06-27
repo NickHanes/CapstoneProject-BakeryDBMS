@@ -3,22 +3,15 @@ import psycopg2
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import date
-from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 from pathlib import Path
 
 app = FastAPI()
 
-# Specify the directory for custom HTML files
-templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
-
-@app.get("/")
-async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
-
 origins = [
     "http://localhost:3000",  # Allow your React frontend
     "http://127.0.0.1:3000", # Allow 127.0.0.1 too
+    "https://your-frontend-app-name.onrender.com"
 ]
 
 # Enable CORS for React frontend
