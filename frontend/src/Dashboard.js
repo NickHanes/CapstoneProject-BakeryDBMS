@@ -3,6 +3,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [inventory, setInventory] = useState([]);
@@ -15,13 +17,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productsRes = await axios.get("http://localhost:8000/products/");
+        const productsRes = await axios.get(`${API_URL}/api/products/`);
         setProducts(productsRes.data);
 
-        const inventoryRes = await axios.get("http://localhost:8000/inventory/");
+        const inventoryRes = await axios.get(`${API_URL}/api/inventory/`);
         setInventory(inventoryRes.data);
 
-        const recipesRes = await axios.get("http://localhost:8000/recipes/");
+        const recipesRes = await axios.get(`${API_URL}/api/recipes/`);
         setRecipes(
           recipesRes.data.map(recipe => ({
             ...recipe,
@@ -31,7 +33,7 @@ const Dashboard = () => {
           }))
         );
 
-        const productionRes = await axios.get("http://localhost:8000/production_needed/");
+        const productionRes = await axios.get(`${API_URL}/api/production_needed/`);
         setProductionNeeded(productionRes.data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -49,12 +51,12 @@ const Dashboard = () => {
         throw new Error('Stock cannot be negative');
       }
       
-      await axios.put(`http://localhost:8000/products/${productId}/stock`, {
+      await axios.put(`${API_URL}/api/products/${productId}/stock`, {
         current_stock: newStock
       });
 
       // Add to product history with selected date
-      await axios.post("http://localhost:8000/product_history/", {
+      await axios.post(`${API_URL}/api/product_history/`, {
         product_id: productId,
         date: selectedDate.toISOString().split("T")[0],
         have: newStock,
