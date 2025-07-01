@@ -23,6 +23,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/api/version")
+def get_version():
+    # Use a new, unique version string to be sure
+    return {"version": "2.0-wildcard-test"}
+
 # Database connection function
 def get_db_connection():
     return psycopg2.connect(
