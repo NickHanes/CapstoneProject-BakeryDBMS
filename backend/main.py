@@ -5,6 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import date
 from starlette.requests import Request
 from pathlib import Path
+import os
+
+def get_db_connection():
+    db_url = os.environ.get('DATABASE_URL')
+    if not db_url:
+        raise ValueError("DATABASE_URL environment variable is not set")
+    conn = psycopg2.connect(db_url)
+    return conn
 
 app = FastAPI()
 
@@ -27,15 +35,6 @@ app.add_middleware(
 def get_version():
     # Use a new, unique version string to be sure
     return {"version": "2.0-wildcard-test"}
-
-# Database connection function
-def get_db_connection():
-    return psycopg2.connect(
-        dbname="bakery",
-        user="nicholashanes",
-        host="localhost",
-        port="5432"
-    )
 
 # Pydantic models
 class Product(BaseModel):
