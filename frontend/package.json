@@ -20,12 +20,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start": "concurrently \"npm run start:react\" \"npm run start:uvicorn\"",
-    "start:react": "react-scripts start",
-    "start:uvicorn": "uvicorn /Users/nicholashanes/Documents/GitHub/CapstoneProject-BakeryDBMS/backend/main:app --reload"
+      "start": "react-scripts start",
+      "start:react": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
