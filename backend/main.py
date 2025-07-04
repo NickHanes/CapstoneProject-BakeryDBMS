@@ -32,6 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/api/version")
 def get_version():
     # Use a new, unique version string to be sure

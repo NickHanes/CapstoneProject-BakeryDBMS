@@ -4,6 +4,21 @@ import { useState, useEffect } from "react";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+const express = require('express');
+const cors = require('cors'); // Import the cors package
+const app = express();
+
+// --- Add this section ---
+const corsOptions = {
+  origin: 'https://bakerydbms-frontend.onrender.com', // Your frontend's URL
+  optionsSuccessStatus: 200 // For legacy browser support
+};
+
+app.use(cors(corsOptions));
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
 // History Page
 const HistoryPage = () => {
   const [history, setHistory] = useState([]);
