@@ -20,6 +20,7 @@ origins = [
     "http://localhost:3000",  # Allow your React frontend
     "http://127.0.0.1:3000", # Allow 127.0.0.1 too
     "https://bakerydbms-frontend.onrender.com"
+    "https://bakerydbms.onrender.com"
 ]
 
 # Enable CORS for React frontend
