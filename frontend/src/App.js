@@ -1,27 +1,18 @@
+// src/App.js
+
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Dashboard from './Dashboard'; // Import Dashboard component
+import Dashboard from './Dashboard'; // Make sure this component exists
 import { useState, useEffect } from "react";
 
+// This is the correct way to get the backend API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
-const cors = require('cors'); // Import the cors package
-
-// --- Add this section ---
-const corsOptions = {
-  origin: 'https://bakerydbms-frontend.onrender.com', // Your frontend's URL
-  optionsSuccessStatus: 200 // For legacy browser support
-};
-
-App.use(cors(corsOptions));
-
-const PORT = process.env.PORT || 3001;
-App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-// History Page
+// HistoryPage Component (Frontend Logic)
 const HistoryPage = () => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
+    // Fetch data from your backend's API endpoint
     fetch(`${API_URL}/api/inventory_history`)
       .then((res) => res.json())
       .then((data) => setHistory(data))
@@ -43,7 +34,7 @@ const HistoryPage = () => {
         <tbody>
           {history.map((entry) => (
             <tr key={entry.history_id} className="border">
-              <td className="border px-4 py-2">{entry.date}</td>
+              <td className="border px-4 py-2">{new Date(entry.date).toLocaleDateString()}</td>
               <td className="border px-4 py-2">{entry.product_name}</td>
               <td className="border px-4 py-2">{entry.have}</td>
               <td className="border px-4 py-2">{entry.made}</td>
@@ -55,17 +46,20 @@ const HistoryPage = () => {
   );
 };
 
+// Main App Component (The Router)
 const App = () => {
   return (
     <Router>
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">Bakery Dashboard</h1>
-        <Link to="/" className="text-blue-500 underline mb-4 block">
-          Go to Dashboard
-        </Link>
-        <Link to="/history" className="text-blue-500 underline mb-4 block">
-          View Inventory History
-        </Link>
+        <nav>
+          <Link to="/" className="text-blue-500 underline mr-4">
+            Dashboard
+          </Link>
+          <Link to="/history" className="text-blue-500 underline">
+            Inventory History
+          </Link>
+        </nav>
       </div>
       
       <Routes>
