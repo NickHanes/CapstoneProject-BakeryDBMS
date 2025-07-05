@@ -4,9 +4,7 @@ import { useState, useEffect } from "react";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const express = require('express');
 const cors = require('cors'); // Import the cors package
-const app = express();
 
 // --- Add this section ---
 const corsOptions = {
