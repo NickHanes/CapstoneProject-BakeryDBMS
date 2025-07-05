@@ -8,9 +8,14 @@ from pathlib import Path
 import os
 
 def get_db_connection():
-    db_url = os.environ.get('DATABASE_URL')
+    # Get the database URL from the environment variables.
+    db_url = os.getenv("DATABASE_URL")
+
+    # This check will now raise an error if the URL is missing or empty.
     if not db_url:
-        raise ValueError("DATABASE_URL environment variable is not set")
+        raise ValueError("FATAL: DATABASE_URL environment variable is not set or is empty.")
+
+    # Connect using the URL from the environment.
     conn = psycopg2.connect(db_url)
     return conn
 
