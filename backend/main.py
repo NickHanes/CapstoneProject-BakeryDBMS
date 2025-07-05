@@ -32,6 +32,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/api/debug-env")
+def debug_environment():
+    db_url = os.getenv("DATABASE_URL")
+    
+    if db_url:
+        # URL is found, let's return some safe-to-view info without the password
+        return {
+            "status": "DATABASE_URL is set",
+            "is_url_present": True,
+            "details": "The application can see the database URL."
+        }
+    else:
+        # URL is NOT found
+        return {
+            "status": "DATABASE_URL is NOT set",
+            "is_url_present": False,
+            "details": "The application cannot find the DATABASE_URL environment variable."
+        }
+    
+@app.get("/api/test")
+def test_endpoint():
+    return {"message": "Hello from the backend!"}
+
 
 @app.get("/api/version")
 def get_version():
