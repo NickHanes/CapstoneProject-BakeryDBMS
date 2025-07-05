@@ -17,13 +17,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productsRes = await axios.get(`${API_URL}/api/products/`);
+        const productsRes = await axios.get(`${API_URL}/products/`);
         setProducts(productsRes.data);
 
-        const inventoryRes = await axios.get(`${API_URL}/api/inventory/`);
+        const inventoryRes = await axios.get(`${API_URL}/inventory/`);
         setInventory(inventoryRes.data);
 
-        const recipesRes = await axios.get(`${API_URL}/api/recipes/`);
+        const recipesRes = await axios.get(`${API_URL}/recipes/`);
         setRecipes(
           recipesRes.data.map(recipe => ({
             ...recipe,
@@ -33,7 +33,7 @@ const Dashboard = () => {
           }))
         );
 
-        const productionRes = await axios.get(`${API_URL}/api/production_needed/`);
+        const productionRes = await axios.get(`${API_URL}/production_needed/`);
         setProductionNeeded(productionRes.data);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -51,12 +51,12 @@ const Dashboard = () => {
         throw new Error('Stock cannot be negative');
       }
       
-      await axios.put(`${API_URL}/api/products/${productId}/stock`, {
+      await axios.put(`${API_URL}/products/${productId}/stock`, {
         current_stock: newStock
       });
 
       // Add to product history with selected date
-      await axios.post(`${API_URL}/api/product_history/`, {
+      await axios.post(`${API_URL}/product_history/`, {
         product_id: productId,
         date: selectedDate.toISOString().split("T")[0],
         have: newStock,

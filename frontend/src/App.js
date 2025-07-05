@@ -13,7 +13,7 @@ const HistoryPage = () => {
 
   useEffect(() => {
     // Fetch data from your backend's API endpoint
-    fetch(`${API_URL}/api/inventory_history`)
+    fetch(`${API_URL}/inventory_history`)
       .then((res) => res.json())
       .then((data) => setHistory(data))
       .catch((err) => console.error("Error fetching history:", err));

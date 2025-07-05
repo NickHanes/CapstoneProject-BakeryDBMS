@@ -16,7 +16,7 @@ const History = () => {
   const fetchHistory = async () => {
     try {
       const formattedDate = selectedDate.toISOString().split("T")[0]; 
-      const response = await axios.get(`${API_URL}/api/history?date=${formattedDate}`);
+      const response = await axios.get(`${API_URL}/history?date=${formattedDate}`);
       setHistory(response.data);
     } catch (error) {
       console.error("Error fetching history:", error);
