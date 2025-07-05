@@ -56,15 +56,10 @@ def debug_environment():
             "details": "The application cannot find the DATABASE_URL environment variable."
         }
     
+# Change the message in this function
 @app.get("/api/test")
 def test_endpoint():
-    return {"message": "Hello from the backend!"}
-
-
-@app.get("/api/version")
-def get_version():
-    # Use a new, unique version string to be sure
-    return {"version": "2.0-wildcard-test"}
+    return {"message": "The new deployment is LIVE!"}
 
 # Pydantic models
 class Product(BaseModel):
