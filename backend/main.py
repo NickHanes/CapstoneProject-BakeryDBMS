@@ -97,7 +97,7 @@ def get_inventory():
     cur.close()
     conn.close()
 
-    return [{"ingredient_id": row[0], "name": row[1], "stock": row[2], "unit": row[3]} for row in rows]
+    return [{"id": row[0], "name": row[1], "stock": row[2], "unit": row[3]} for row in rows]
 
 # Endpoint to get recipes
 @app.get("/recipes/")
