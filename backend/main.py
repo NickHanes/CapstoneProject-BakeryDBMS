@@ -37,29 +37,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/debug-env")
-def debug_environment():
-    db_url = os.getenv("DATABASE_URL")
-    
-    if db_url:
-        # URL is found, let's return some safe-to-view info without the password
-        return {
-            "status": "DATABASE_URL is set",
-            "is_url_present": True,
-            "details": "The application can see the database URL."
-        }
-    else:
-        # URL is NOT found
-        return {
-            "status": "DATABASE_URL is NOT set",
-            "is_url_present": False,
-            "details": "The application cannot find the DATABASE_URL environment variable."
-        }
-    
-# Change the message in this function
-@app.get("/api/test")
-def test_endpoint():
-    return {"message": "The new deployment is LIVE!"}
 
 # Pydantic models
 class Product(BaseModel):
@@ -72,7 +49,7 @@ class StockUpdate(BaseModel):
     update_date: date
 
 # Endpoint to get products
-@app.get("/api/products/")
+@app.get("/products/")
 async def get_products():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -92,7 +69,7 @@ async def get_products():
     ]
 
 # Endpoint to get products that need to be made
-@app.get("/api/production_needed/")
+@app.get("/production_needed/")
 def get_production_needed():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -111,7 +88,7 @@ def get_production_needed():
     return [{"product_id": row[0], "name": row[1], "to_produce": row[2]} for row in rows]
 
 # Endpoint to get inventory
-@app.get("/api/inventory/")
+@app.get("/inventory/")
 def get_inventory():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -123,7 +100,7 @@ def get_inventory():
     return [{"ingredient_id": row[0], "name": row[1], "stock": row[2], "unit": row[3]} for row in rows]
 
 # Endpoint to get recipes
-@app.get("/api/recipes/")
+@app.get("/recipes/")
 def get_recipes():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -135,7 +112,7 @@ def get_recipes():
     return [{"recipe_id": row[0], "product_id": row[1], "ingredient_id": row[2], "amount_needed": row[3], "unit": row[4]} for row in rows]
 
 # Endpoint to update product stock and log history
-@app.put("/api/products/{product_id}/stock")
+@app.put("/products/{product_id}/stock")
 def update_product_stock(product_id: int, stock_update: StockUpdate):
     conn = get_db_connection()
     cur = conn.cursor()
